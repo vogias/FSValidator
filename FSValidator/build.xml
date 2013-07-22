@@ -64,6 +64,12 @@
 				<attribute name="Class-Path" value="./lib/commons-io-2.4.jar" />
 			</manifest>
 		</jar>
+		<copy file="configure.properties" todir="${dist.dir}" />
+
+		<mkdir dir="${dist.dir}/lib/" />
+		<copy todir="${dist.dir}/lib/">
+			<fileset dir="${lib.dir}" />
+		</copy>
 	</target>
 
 
