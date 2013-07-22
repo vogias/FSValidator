@@ -4,7 +4,7 @@
 	<!ENTITY buildProps SYSTEM "./build.properties">
 ]>
 
-<project name="translet" default="build" basedir=".">
+<project name="FSValidator" default="build" basedir=".">
 	
 	&buildProps;
 	
