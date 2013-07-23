@@ -87,7 +87,8 @@ public class XMLValidation {
 						}
 					}
 				}
-				report.appendGeneralInfo();
+				if (report != null)
+					report.appendGeneralInfo();
 				System.out.println("Validation is done.");
 			}
 
