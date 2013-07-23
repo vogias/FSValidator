@@ -21,6 +21,26 @@ public class Arguments {
 		props.load(new FileInputStream("configure.properties"));
 	}
 
+	
+	
+	/**
+	 * @return the props
+	 */
+	public Properties getProps() {
+		return props;
+	}
+
+
+
+	/**
+	 * @param props the props to set
+	 */
+	public void setProps(Properties props) {
+		this.props = props;
+	}
+
+
+
 	public String getSchemaURL() {
 		return props.getProperty(Constants.xsd);
 	}

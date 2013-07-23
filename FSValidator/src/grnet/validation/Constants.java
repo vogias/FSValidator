@@ -13,4 +13,5 @@ public class Constants {
 	public static String xsd = "validation.xsd.url";
 	public static String validData = "OK";
 	public static String invalidData = "Invalid";
+	public static String createReport = "validation.report.mode";
 }

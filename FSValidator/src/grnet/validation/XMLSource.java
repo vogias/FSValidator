@@ -4,6 +4,7 @@
 package grnet.validation;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.util.Collection;
 
 import org.apache.commons.io.FileUtils;
@@ -37,10 +38,12 @@ public class XMLSource {
 		
 
 		Collection<File> files = FileUtils.listFiles(getSource(), extensions, true);
-
+		
+		
 		return files;
 
 	}
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

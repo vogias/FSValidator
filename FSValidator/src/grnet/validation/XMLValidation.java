@@ -31,7 +31,7 @@ public class XMLValidation {
 			if (sourceFile.exists()) {
 
 				Collection<File> xmls = source.getXMLs();
-				
+
 				System.out
 						.println("Number of files to validate:" + xmls.size());
 
@@ -39,20 +39,30 @@ public class XMLValidation {
 
 				System.out.println("Validating...");
 
-				ValidationReport report = new ValidationReport(enviroment
-						.getArguments().getDestFolderLocation(), enviroment
-						.getDataProviderValid().getName());
+				ValidationReport report = null;
+				if (enviroment.getArguments().getProps()
+						.getProperty(Constants.createReport)
+						.equalsIgnoreCase("true")) {
+					report = new ValidationReport(enviroment.getArguments()
+							.getDestFolderLocation(), enviroment
+							.getDataProviderValid().getName());
+				}
+
 				while (iterator.hasNext()) {
 
 					File xmlFile = iterator.next();
+
 					boolean xmlIsValid = core.validateXMLSchema(enviroment
 							.getArguments().getSchemaURL(), xmlFile);
 
 					if (xmlIsValid) {
 						try {
-							report.appendXMLFileNameNStatus(xmlFile.getPath(),
-									Constants.validData, core.getReason());
-							report.raiseValidFilesNum();
+							if (report != null) {
+								report.appendXMLFileNameNStatus(
+										xmlFile.getPath(), Constants.validData,
+										core.getReason());
+								report.raiseValidFilesNum();
+							}
 
 							FileUtils.copyFileToDirectory(xmlFile,
 									enviroment.getDataProviderValid());
@@ -63,9 +73,12 @@ public class XMLValidation {
 					} else {
 
 						try {
-							report.appendXMLFileNameNStatus(xmlFile.getPath(),
-									Constants.invalidData, core.getReason());
-							report.raiseValidFilesNum();
+							if (report != null) {
+								report.appendXMLFileNameNStatus(
+										xmlFile.getPath(),
+										Constants.invalidData, core.getReason());
+								report.raiseInvalidFilesNum();
+							}
 							FileUtils.copyFileToDirectory(xmlFile,
 									enviroment.getDataProviderInValid());
 						} catch (IOException e) {

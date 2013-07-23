@@ -84,8 +84,8 @@ public class ValidationReport {
 	}
 
 	private void appendTotalParsedFiles() throws IOException {
-		writer.append("Total parsed files:" + getInvalidFilesNum()
-				+ getValidFilesNum());
+		int total = getInvalidFilesNum() + getValidFilesNum();
+		writer.append("Total parsed files:" + total);
 		writer.newLine();
 	}
 
