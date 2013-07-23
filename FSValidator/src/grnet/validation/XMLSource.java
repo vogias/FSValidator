@@ -34,9 +34,9 @@ public class XMLSource {
 	public Collection<File> getXMLs() {
 
 		String[] extensions = { "xml" };
-		FileUtils utils = new FileUtils();
+		
 
-		Collection<File> files = utils.listFiles(getSource(), extensions, true);
+		Collection<File> files = FileUtils.listFiles(getSource(), extensions, true);
 
 		return files;
 

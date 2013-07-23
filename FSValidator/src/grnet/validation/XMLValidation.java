@@ -31,6 +31,7 @@ public class XMLValidation {
 			if (sourceFile.exists()) {
 
 				Collection<File> xmls = source.getXMLs();
+				
 				System.out
 						.println("Number of files to validate:" + xmls.size());
 
