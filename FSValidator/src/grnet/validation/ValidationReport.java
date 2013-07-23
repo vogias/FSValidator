@@ -95,7 +95,7 @@ public class ValidationReport {
 	}
 
 	private void appendInValidFilesNum() throws IOException {
-		writer.append("Number of valid records:" + getInvalidFilesNum());
+		writer.append("Number of invalid records:" + getInvalidFilesNum());
 		writer.newLine();
 	}
 
