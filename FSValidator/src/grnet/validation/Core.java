@@ -74,6 +74,7 @@ public class Core {
 		validator.setErrorHandler(lenient);
 		try {
 			validator.validate(new StreamSource(xml));
+
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,11 +90,15 @@ public class Core {
 
 		if (message.contains("**Parsing Error**"))
 
-			flag = flag && false;
+			flag = false;
 
 		else if (message.contains("**Fatal Error**"))
 
-			flag = flag && false;
+			flag = false;
+		else if (message.contains("**Parsing Warning**"))
+			flag = false;
+		else
+			flag = true;
 
 		return flag;
 	}

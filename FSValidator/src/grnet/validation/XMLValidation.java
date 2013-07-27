@@ -22,8 +22,8 @@ public class XMLValidation {
 		Enviroment enviroment = new Enviroment();
 
 		if (enviroment.envCreation) {
-			Core core = new Core(enviroment
-					.getArguments().getSchemaURL());
+			String schemaUrl = enviroment.getArguments().getSchemaURL();
+			Core core = new Core(schemaUrl);
 
 			XMLSource source = new XMLSource(enviroment.getArguments()
 					.getSourceFolderLocation());
@@ -38,7 +38,7 @@ public class XMLValidation {
 
 				Iterator<File> iterator = xmls.iterator();
 
-				System.out.println("Validating...");
+				System.out.println("Validating against schema:" + schemaUrl+"...");
 
 				ValidationReport report = null;
 				if (enviroment.getArguments().getProps()
