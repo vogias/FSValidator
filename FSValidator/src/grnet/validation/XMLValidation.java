@@ -57,12 +57,12 @@ public class XMLValidation {
 
 					if (xmlIsValid) {
 						try {
-							if (report != null) {
-								report.appendXMLFileNameNStatus(
-										xmlFile.getPath(), Constants.validData,
-										core.getReason());
-								report.raiseValidFilesNum();
-							}
+							// if (report != null) {
+							// report.appendXMLFileNameNStatus(
+							// xmlFile.getPath(), Constants.validData,
+							// core.getReason());
+							// report.raiseValidFilesNum();
+							// }
 
 							FileUtils.copyFileToDirectory(xmlFile,
 									enviroment.getDataProviderValid());
