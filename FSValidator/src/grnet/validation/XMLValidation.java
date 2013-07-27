@@ -22,7 +22,8 @@ public class XMLValidation {
 		Enviroment enviroment = new Enviroment();
 
 		if (enviroment.envCreation) {
-			Core core = new Core();
+			Core core = new Core(enviroment
+					.getArguments().getSchemaURL());
 
 			XMLSource source = new XMLSource(enviroment.getArguments()
 					.getSourceFolderLocation());
@@ -52,8 +53,7 @@ public class XMLValidation {
 
 					File xmlFile = iterator.next();
 
-					boolean xmlIsValid = core.validateXMLSchema(enviroment
-							.getArguments().getSchemaURL(), xmlFile);
+					boolean xmlIsValid = core.validateXMLSchema(xmlFile);
 
 					if (xmlIsValid) {
 						try {

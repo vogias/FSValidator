@@ -14,7 +14,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
 /**
@@ -28,10 +27,30 @@ public class Core {
 	 */
 	String reason;
 	Boolean flag;
+	Validator validator;
 
-	public Core() {
+	public Core(String xsdPath) {
 		reason = "";
 		flag = true;
+
+		SchemaFactory factory = SchemaFactory
+				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+		Schema schema;
+		try {
+			schema = factory.newSchema(new URL(xsdPath));
+			validator = schema.newValidator();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			System.err.println("Malformed URL.");
+			System.err.println("Please correct the input XSD URL");
+			System.err.println("Exiting...");
+			System.exit(-1);
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
@@ -49,58 +68,22 @@ public class Core {
 		this.reason = reason;
 	}
 
-	public boolean validateXMLSchema(String xsdPath, File xml) {
+	public boolean validateXMLSchema(File xml) {
 
-		// try {
-		SchemaFactory factory = SchemaFactory
-				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-
-		// Schema schema = factory.newSchema(new File(xsdPath));
-		Schema schema;
-		ValidationErrorHandler lenient = null;
+		ValidationErrorHandler lenient = new ValidationErrorHandler();
+		validator.setErrorHandler(lenient);
 		try {
-			schema = factory.newSchema(new URL(xsdPath));
-
-			Validator validator = schema.newValidator();
-			lenient = new ValidationErrorHandler();
-			validator.setErrorHandler(lenient);
 			validator.validate(new StreamSource(xml));
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			System.err.println("Malformed URL.");
-			System.err.println("Please correct the input XSD URL");
-			System.err.println("Exiting...");
-			System.exit(-1);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-
-			// String message = e.getLocalizedMessage();
-			// setReason(message);
-			// if (message.contains("**Parsing Warning**")) {
-			// appendtReason(message);
-			//
-			// // System.out.println(getReason());
-			// } else if (message.contains("**Parsing Error**")) {
-			// appendtReason(message);
-			// flag = flag && false;
-			// // System.out.println(getReason());
-			// } else if (message.contains("**Fatal Error**")) {
-			// appendtReason(message);
-			//
-			// flag = flag && false;
-			// // System.out.println(getReason());
-			// }
-
-			// return flag;
+			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.err.println("Source XML File not found ");
 			System.err.println("Please correct the input XML Folder location.");
 			System.err.println("Exiting...");
 			System.exit(-1);
-
 		}
+
 		String message = lenient.getMessage();
 		setReason(message);
 
@@ -114,5 +97,4 @@ public class Core {
 
 		return flag;
 	}
-
 }
