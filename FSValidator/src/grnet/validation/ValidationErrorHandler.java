@@ -23,7 +23,7 @@ public class ValidationErrorHandler implements ErrorHandler {
 		message += mes + "\n";
 	}
 
-	public void warning(SAXParseException ex) throws SAXException {
+	public void warning(SAXParseException ex) {
 		String message = "**Parsing Warning**" + "  Line:    "
 				+ ex.getLineNumber() + " URI:" + ex.getSystemId()
 				+ " Message: " + ex.getMessage();
@@ -32,7 +32,7 @@ public class ValidationErrorHandler implements ErrorHandler {
 		// throw new SAXException(message);
 	}
 
-	public void error(SAXParseException ex) throws SAXException {
+	public void error(SAXParseException ex) {
 		String message = "**Parsing Error**" + " Line:" + ex.getLineNumber()
 				+ " URI:" + ex.getSystemId() + " Message: " + ex.getMessage();
 
@@ -40,7 +40,7 @@ public class ValidationErrorHandler implements ErrorHandler {
 		// throw new SAXException(message);
 	}
 
-	public void fatalError(SAXParseException ex) throws SAXException {
+	public void fatalError(SAXParseException ex) {
 		String message = "**Fatal Error**" + " Line:" + ex.getLineNumber()
 				+ " URI:" + ex.getSystemId() + " Message:" + ex.getMessage();
 
