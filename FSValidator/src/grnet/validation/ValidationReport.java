@@ -122,7 +122,7 @@ public class ValidationReport {
 		writer.append("Validating Status:" + status);
 		writer.newLine();
 		if (status.equals(Constants.invalidData)) {
-			writer.append("Reason:" + reason);
+			writer.append("Reason:\n" + reason);
 			writer.newLine();
 		}
 	}

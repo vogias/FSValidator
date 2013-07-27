@@ -27,9 +27,11 @@ public class Core {
 	 * @param args
 	 */
 	String reason;
+	Boolean flag;
 
 	public Core() {
 		reason = "";
+		flag = true;
 	}
 
 	/**
@@ -55,13 +57,15 @@ public class Core {
 
 		// Schema schema = factory.newSchema(new File(xsdPath));
 		Schema schema;
+		ValidationErrorHandler lenient = null;
 		try {
 			schema = factory.newSchema(new URL(xsdPath));
 
 			Validator validator = schema.newValidator();
-			ErrorHandler lenient = new ValidationErrorHandler();
+			lenient = new ValidationErrorHandler();
 			validator.setErrorHandler(lenient);
 			validator.validate(new StreamSource(xml));
+
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Malformed URL.");
@@ -71,19 +75,44 @@ public class Core {
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 
-			String message = e.getLocalizedMessage();
-			System.out.println(message);
-			setReason(message);
-			return false;
+			// String message = e.getLocalizedMessage();
+			// setReason(message);
+			// if (message.contains("**Parsing Warning**")) {
+			// appendtReason(message);
+			//
+			// // System.out.println(getReason());
+			// } else if (message.contains("**Parsing Error**")) {
+			// appendtReason(message);
+			// flag = flag && false;
+			// // System.out.println(getReason());
+			// } else if (message.contains("**Fatal Error**")) {
+			// appendtReason(message);
+			//
+			// flag = flag && false;
+			// // System.out.println(getReason());
+			// }
+
+			// return flag;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Source XML File not found ");
 			System.err.println("Please correct the input XML Folder location.");
 			System.err.println("Exiting...");
 			System.exit(-1);
-		}
 
-		return true;
+		}
+		String message = lenient.getMessage();
+		setReason(message);
+
+		if (message.contains("**Parsing Error**"))
+
+			flag = flag && false;
+
+		else if (message.contains("**Fatal Error**"))
+
+			flag = flag && false;
+
+		return flag;
 	}
 
 }

@@ -13,15 +13,38 @@ import org.xml.sax.SAXParseException;
  */
 public class ValidationErrorHandler implements ErrorHandler {
 
-	public void warning(SAXParseException ex) {
-		System.err.println(ex.getMessage());
+	String message = "";
+
+	public String getMessage() {
+		return message;
 	}
 
-	public void error(SAXParseException ex) {
-		System.err.println(ex.getMessage());
+	public void appenedMessage(String mes) {
+		message += mes + "\n";
+	}
+
+	public void warning(SAXParseException ex) throws SAXException {
+		String message = "**Parsing Warning**" + "  Line:    "
+				+ ex.getLineNumber() + " URI:" + ex.getSystemId()
+				+ " Message: " + ex.getMessage();
+
+		appenedMessage(message);
+		// throw new SAXException(message);
+	}
+
+	public void error(SAXParseException ex) throws SAXException {
+		String message = "**Parsing Error**" + " Line:" + ex.getLineNumber()
+				+ " URI:" + ex.getSystemId() + " Message: " + ex.getMessage();
+
+		appenedMessage(message);
+		// throw new SAXException(message);
 	}
 
 	public void fatalError(SAXParseException ex) throws SAXException {
-		throw ex;
+		String message = "**Fatal Error**" + " Line:" + ex.getLineNumber()
+				+ " URI:" + ex.getSystemId() + " Message:" + ex.getMessage();
+
+		appenedMessage(message);
+		// throw new SAXException(message);
 	}
 }
