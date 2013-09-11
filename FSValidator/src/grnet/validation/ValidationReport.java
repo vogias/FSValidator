@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Vector;
 
 /**
  * @author vogias
@@ -27,6 +28,7 @@ public class ValidationReport {
 
 	public ValidationReport(String path, String name) throws IOException {
 		validationReportpath = path;
+
 		validationReport = new File(path, "report_" + name + ".txt");
 
 		validFilesNum = 0;
@@ -107,11 +109,27 @@ public class ValidationReport {
 	}
 
 	public void appendGeneralInfo() throws IOException {
+		writer.append("=========Validation general info===========");
+		writer.newLine();
 		appendTotalParsedFiles();
 		appendDuration();
 		appendValidFilesNum();
 		appendInValidFilesNum();
+		writer.append("===========================================");
+		writer.newLine();
 		writer.close();
+
+	}
+
+	public void writeErrorBank(Vector<String> errorBank) throws IOException {
+		writer.append("=========Validation errors summary=========");
+		writer.newLine();
+		for (int i = 0; i < errorBank.size(); i++) {
+			writer.append("Validation error:" + errorBank.elementAt(i));
+			writer.newLine();
+		}
+		writer.append("===========================================");
+		writer.newLine();
 
 	}
 

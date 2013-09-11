@@ -3,8 +3,9 @@
  */
 package grnet.validation;
 
+import java.util.Vector;
+
 import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -13,38 +14,60 @@ import org.xml.sax.SAXParseException;
  */
 public class ValidationErrorHandler implements ErrorHandler {
 
-	String message = "";
+	String fullmessage = "";
+	Vector<String> shortMessage = new Vector<>();
 
-	public String getMessage() {
-		return message;
+	public String getFullMessage() {
+		return fullmessage;
 	}
 
-	public void appenedMessage(String mes) {
-		message += mes + "\n";
+	private void appendShortMessage(String sMes) {
+		if (!shortMessage.contains(sMes))
+			shortMessage.add(sMes);
+	}
+
+	public Vector<String> getShortMessages() {
+		return shortMessage;
+	}
+
+	public void appenedFullMessage(String mes) {
+		fullmessage += mes + "\n";
 	}
 
 	public void warning(SAXParseException ex) {
+		String shortMes = ex.getMessage();
+
 		String message = "**Parsing Warning**" + "  Line:    "
 				+ ex.getLineNumber() + " URI:" + ex.getSystemId()
-				+ " Message: " + ex.getMessage();
+				+ " Message: " + shortMes;
 
-		appenedMessage(message);
+		appenedFullMessage(message);
+
+		appendShortMessage(shortMes);
 		// throw new SAXException(message);
 	}
 
 	public void error(SAXParseException ex) {
-		String message = "**Parsing Error**" + " Line:" + ex.getLineNumber()
-				+ " URI:" + ex.getSystemId() + " Message: " + ex.getMessage();
+		String shortMes = ex.getMessage();
 
-		appenedMessage(message);
+		String message = "**Parsing Error**" + " Line:" + ex.getLineNumber()
+				+ " URI:" + ex.getSystemId() + " Message: " + shortMes;
+
+		appenedFullMessage(message);
+
+		appendShortMessage(shortMes);
 		// throw new SAXException(message);
 	}
 
 	public void fatalError(SAXParseException ex) {
-		String message = "**Fatal Error**" + " Line:" + ex.getLineNumber()
-				+ " URI:" + ex.getSystemId() + " Message:" + ex.getMessage();
+		String shortMes = ex.getMessage();
 
-		appenedMessage(message);
+		String message = "**Fatal Error**" + " Line:" + ex.getLineNumber()
+				+ " URI:" + ex.getSystemId() + " Message:" + shortMes;
+
+		appenedFullMessage(message);
+
+		appendShortMessage(shortMes);
 		// throw new SAXException(message);
 	}
 }

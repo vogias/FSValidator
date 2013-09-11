@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Vector;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
@@ -28,13 +29,17 @@ public class Core {
 	String reason;
 	Boolean flag;
 	Validator validator;
+	Vector<String> vErrors;
 
 	public Core(String xsdPath) {
 		reason = "";
 		flag = true;
+		vErrors = new Vector<>();
 
 		SchemaFactory factory = SchemaFactory
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+		// .newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
 		Schema schema;
 		try {
@@ -51,6 +56,19 @@ public class Core {
 			e.printStackTrace();
 		}
 
+	}
+
+	public void addReason2FaultBank(Vector<String> errors) {
+
+		for (int i = 0; i < errors.size(); i++) {
+			String error = errors.elementAt(i);
+			if (!vErrors.contains(error))
+				vErrors.addElement(error);
+		}
+	}
+
+	public Vector<String> getErrorBank() {
+		return vErrors;
 	}
 
 	/**
@@ -85,8 +103,9 @@ public class Core {
 			System.exit(-1);
 		}
 
-		String message = lenient.getMessage();
+		String message = lenient.getFullMessage();
 		setReason(message);
+		addReason2FaultBank(lenient.getShortMessages());
 
 		if (message.contains("**Parsing Error**"))
 

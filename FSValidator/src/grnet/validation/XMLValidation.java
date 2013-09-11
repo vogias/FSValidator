@@ -38,15 +38,17 @@ public class XMLValidation {
 
 				Iterator<File> iterator = xmls.iterator();
 
-				System.out.println("Validating against schema:" + schemaUrl+"...");
+				System.out.println("Validating against schema:" + schemaUrl
+						+ "...");
 
 				ValidationReport report = null;
-				if (enviroment.getArguments().getProps()
-						.getProperty(Constants.createReport)
+				if (enviroment.getArguments().createReport()
 						.equalsIgnoreCase("true")) {
+
 					report = new ValidationReport(enviroment.getArguments()
 							.getDestFolderLocation(), enviroment
 							.getDataProviderValid().getName());
+
 				}
 
 				while (iterator.hasNext()) {
@@ -74,9 +76,14 @@ public class XMLValidation {
 
 						try {
 							if (report != null) {
-								report.appendXMLFileNameNStatus(
-										xmlFile.getPath(),
-										Constants.invalidData, core.getReason());
+
+								if (enviroment.getArguments().extendedReport()
+										.equalsIgnoreCase("true"))
+									report.appendXMLFileNameNStatus(
+											xmlFile.getPath(),
+											Constants.invalidData,
+											core.getReason());
+
 								report.raiseInvalidFilesNum();
 							}
 							FileUtils.copyFileToDirectory(xmlFile,
@@ -87,8 +94,10 @@ public class XMLValidation {
 						}
 					}
 				}
-				if (report != null)
+				if (report != null) {
+					report.writeErrorBank(core.getErrorBank());
 					report.appendGeneralInfo();
+				}
 				System.out.println("Validation is done.");
 			}
 
