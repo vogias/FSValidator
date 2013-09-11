@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.xml.XMLConstants;
@@ -29,12 +30,12 @@ public class Core {
 	String reason;
 	Boolean flag;
 	Validator validator;
-	Vector<String> vErrors;
+	HashMap<String, Integer> vErrors;
 
 	public Core(String xsdPath) {
 		reason = "";
 		flag = true;
-		vErrors = new Vector<>();
+		vErrors = new HashMap<>();
 
 		SchemaFactory factory = SchemaFactory
 				.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
@@ -62,12 +63,18 @@ public class Core {
 
 		for (int i = 0; i < errors.size(); i++) {
 			String error = errors.elementAt(i);
-			if (!vErrors.contains(error))
-				vErrors.addElement(error);
+
+			if (vErrors.containsKey(error)) {
+				Integer counter = vErrors.get(error);
+				vErrors.put(error, counter + 1);
+
+			} else {
+				vErrors.put(error, 1);
+			}
 		}
 	}
 
-	public Vector<String> getErrorBank() {
+	public HashMap<String, Integer> getErrorBank() {
 		return vErrors;
 	}
 

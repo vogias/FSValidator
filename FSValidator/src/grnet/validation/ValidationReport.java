@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Vector;
 
 /**
@@ -121,13 +123,22 @@ public class ValidationReport {
 
 	}
 
-	public void writeErrorBank(Vector<String> errorBank) throws IOException {
+	public void writeErrorBank(HashMap<String, Integer> errorBank)
+			throws IOException {
 		writer.append("=========Validation errors summary=========");
 		writer.newLine();
-		for (int i = 0; i < errorBank.size(); i++) {
-			writer.append("Validation error:" + errorBank.elementAt(i));
+
+		Iterator<String> iterator = errorBank.keySet().iterator();
+
+		while (iterator.hasNext()) {
+			String err = iterator.next();
+			Integer counter = errorBank.get(err);
+
+			writer.append("Validation error:" + err + "\nTimes found:"
+					+ counter);
 			writer.newLine();
 		}
+
 		writer.append("===========================================");
 		writer.newLine();
 
