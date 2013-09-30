@@ -24,13 +24,14 @@ public class ValidationReport {
 
 	String validationReportpath;
 	int validFilesNum, invalidFilesNum;
-	File validationReport;
-	BufferedWriter writer;
+	File validationReport, summaryReport;
+	BufferedWriter writer, csvWriter;
 	long start;
+	String name;
 
 	public ValidationReport(String path, String name) throws IOException {
 		validationReportpath = path;
-
+		this.name = name;
 		validationReport = new File(path, "report_" + name + ".txt");
 
 		validFilesNum = 0;
@@ -141,6 +142,32 @@ public class ValidationReport {
 
 		writer.append("===========================================");
 		writer.newLine();
+		
+		writeSummary2CSV(errorBank);
+
+	}
+
+	private void writeSummary2CSV(HashMap<String, Integer> errorBank)
+			throws IOException {
+		summaryReport = new File(validationReportpath, "report_" + this.name
+				+ ".csv");
+		csvWriter = new BufferedWriter(new FileWriter(summaryReport));
+		csvWriter.append("Error,Times_Found");
+		csvWriter.newLine();
+
+		Iterator<String> iterator = errorBank.keySet().iterator();
+
+		while (iterator.hasNext()) {
+			String err = iterator.next();
+			Integer counter = errorBank.get(err);
+
+			if(err.contains(","))
+				err=err.replace(",", "/");
+			
+			csvWriter.append(err + "," + +counter);
+			csvWriter.newLine();
+		}
+		csvWriter.close();
 
 	}
 

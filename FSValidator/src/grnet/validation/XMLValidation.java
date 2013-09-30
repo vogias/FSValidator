@@ -25,8 +25,11 @@ public class XMLValidation {
 			String schemaUrl = enviroment.getArguments().getSchemaURL();
 			Core core = new Core(schemaUrl);
 
-			XMLSource source = new XMLSource(enviroment.getArguments()
-					.getSourceFolderLocation());
+			// XMLSource source = new XMLSource(enviroment.getArguments()
+			// .getSourceFolderLocation());
+			
+			XMLSource source = new XMLSource(args[0]);
+			
 			File sourceFile = source.getSource();
 
 			if (sourceFile.exists()) {
