@@ -17,8 +17,8 @@ public class Enviroment {
 	File validData, invalidData, dataProviderValid, dataProviderInValid;
 	Arguments arguments;
 
-	public Enviroment() {
-		envCreation = createEnviroment();
+	public Enviroment(String source) {
+		envCreation = createEnviroment(source);
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class Enviroment {
 		return invalidData;
 	}
 
-	private boolean createEnviroment() {
+	private boolean createEnviroment(String src) {
 
 		try {
 			arguments = new Arguments();
@@ -104,8 +104,9 @@ public class Enviroment {
 				validData.mkdir();
 				invalidData.mkdir();
 
-				File source = new File(arguments.getSourceFolderLocation());
+				// File source = new File(arguments.getSourceFolderLocation());
 
+				File source = new File(src);
 				if (source.exists()) {
 					dataProviderValid = new File(validData, source.getName());
 					dataProviderValid.mkdir();
@@ -134,13 +135,14 @@ public class Enviroment {
 
 	}
 
-	public static void main(String[] args) {// "http://83.212.101.124/odsAP/lomODS.xsd"
-		// TODO Auto-generated method stub
-		Enviroment enviroment = new Enviroment();
-
-		if (enviroment.envCreation) {
-			System.out.println(enviroment.getInvalidDataFolder().getPath());
-			System.out.println(enviroment.getValidDataFolder().getPath());
-		}
-	}
+	// public static void main(String[] args) {//
+	// "http://83.212.101.124/odsAP/lomODS.xsd"
+	// // TODO Auto-generated method stub
+	// Enviroment enviroment = new Enviroment();
+	//
+	// if (enviroment.envCreation) {
+	// System.out.println(enviroment.getInvalidDataFolder().getPath());
+	// System.out.println(enviroment.getValidDataFolder().getPath());
+	// }
+	// }
 }

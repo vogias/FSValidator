@@ -19,7 +19,7 @@ public class XMLValidation {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method ssstub
 
-		Enviroment enviroment = new Enviroment();
+		Enviroment enviroment = new Enviroment(args[0]);
 
 		if (enviroment.envCreation) {
 			String schemaUrl = enviroment.getArguments().getSchemaURL();
@@ -27,9 +27,9 @@ public class XMLValidation {
 
 			// XMLSource source = new XMLSource(enviroment.getArguments()
 			// .getSourceFolderLocation());
-			
+
 			XMLSource source = new XMLSource(args[0]);
-			
+
 			File sourceFile = source.getSource();
 
 			if (sourceFile.exists()) {

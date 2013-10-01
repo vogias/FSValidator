@@ -41,9 +41,9 @@ public class Arguments {
 		return props.getProperty(Constants.xsd);
 	}
 
-	public String getSourceFolderLocation() {
-		return props.getProperty(Constants.sourceFolder);
-	}
+	// public String getSourceFolderLocation() {
+	// return props.getProperty(Constants.sourceFolder);
+	// }
 
 	public String getDestFolderLocation() {
 		return props.getProperty(Constants.destFolder);
