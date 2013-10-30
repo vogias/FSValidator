@@ -47,7 +47,7 @@ public class ValidationReport {
 		String date = new Date().toString();
 		writer.append("Report date:" + date);
 		writer.newLine();
-		slf4jLogger.info("Report date:" + date);
+		slf4jLogger.info("Validation date:" + date);
 
 	}
 
