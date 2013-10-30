@@ -44,6 +44,8 @@ public class XMLValidation {
 				// System.out
 				// .println("Number of files to validate:" + xmls.size());
 
+				slf4jLogger.info("Validating repository:"
+						+ sourceFile.getName());
 				slf4jLogger.info("Number of files to validate:" + xmls.size());
 
 				Iterator<File> iterator = xmls.iterator();
