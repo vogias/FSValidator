@@ -16,6 +16,8 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 /**
@@ -31,6 +33,8 @@ public class Core {
 	Boolean flag;
 	Validator validator;
 	HashMap<String, Integer> vErrors;
+	private static final Logger slf4jLogger = LoggerFactory
+			.getLogger(Core.class);
 
 	public Core(String xsdPath) {
 		reason = "";
@@ -48,13 +52,18 @@ public class Core {
 			validator = schema.newValidator();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			System.err.println("Malformed URL.");
-			System.err.println("Please correct the input XSD URL");
-			System.err.println("Exiting...");
+			// System.err.println("Malformed URL.");
+			// System.err.println("Please correct the input XSD URL");
+			// System.err.println("Exiting...");
+
+			slf4jLogger
+					.error("Malformed URL.Please correct the input XSD URL,exiting...");
+
 			System.exit(-1);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// e.printStackTrace();
+			slf4jLogger.error(e.getMessage());
 		}
 
 	}
@@ -102,11 +111,15 @@ public class Core {
 
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			slf4jLogger.error(e.getMessage());
 		} catch (IOException e) {
-			System.err.println("Source XML File not found ");
-			System.err.println("Please correct the input XML Folder location.");
-			System.err.println("Exiting...");
+//			System.err.println("Source XML File not found ");
+//			System.err.println("Please correct the input XML Folder location.");
+//			System.err.println("Exiting...");
+			
+			slf4jLogger.error("Source XML File not found,Please correct the input XML Folder location.Exiting...");
+			
 			System.exit(-1);
 		}
 

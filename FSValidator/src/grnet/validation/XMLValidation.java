@@ -9,12 +9,17 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author vogias
  * 
  */
 public class XMLValidation {
+
+	private static final Logger slf4jLogger = LoggerFactory
+			.getLogger(XMLValidation.class);
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method ssstub
@@ -36,12 +41,17 @@ public class XMLValidation {
 
 				Collection<File> xmls = source.getXMLs();
 
-				System.out
-						.println("Number of files to validate:" + xmls.size());
+				// System.out
+				// .println("Number of files to validate:" + xmls.size());
+
+				slf4jLogger.info("Number of files to validate:" + xmls.size());
 
 				Iterator<File> iterator = xmls.iterator();
 
-				System.out.println("Validating against schema:" + schemaUrl
+				// System.out.println("Validating against schema:" + schemaUrl
+				// + "...");
+
+				slf4jLogger.info("Validating against schema:" + schemaUrl
 						+ "...");
 
 				ValidationReport report = null;
@@ -101,7 +111,8 @@ public class XMLValidation {
 					report.writeErrorBank(core.getErrorBank());
 					report.appendGeneralInfo();
 				}
-				System.out.println("Validation is done.");
+				// System.out.println("Validation is done.");
+				slf4jLogger.info("Validation is done");
 			}
 
 		}

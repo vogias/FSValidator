@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author vogias
  * 
@@ -16,6 +19,7 @@ import java.util.Properties;
 public class Arguments {
 
 	Properties props;
+	
 
 	public Arguments() throws FileNotFoundException, IOException {
 		props = new Properties();

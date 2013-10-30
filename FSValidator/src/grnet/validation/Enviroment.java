@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author vogias
  * 
@@ -16,6 +19,9 @@ public class Enviroment {
 	boolean envCreation = false;
 	File validData, invalidData, dataProviderValid, dataProviderInValid;
 	Arguments arguments;
+
+	private static final Logger slf4jLogger = LoggerFactory
+			.getLogger(Enviroment.class);
 
 	public Enviroment(String source) {
 		envCreation = createEnviroment(source);
@@ -125,11 +131,12 @@ public class Enviroment {
 				return false;
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			slf4jLogger.error(e.getMessage());
 			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			slf4jLogger.error(e.getMessage());
 			return false;
 		}
 

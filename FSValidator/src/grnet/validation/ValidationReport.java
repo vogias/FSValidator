@@ -12,6 +12,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author vogias
  * 
@@ -28,6 +31,7 @@ public class ValidationReport {
 	BufferedWriter writer, csvWriter;
 	long start;
 	String name;
+	
 
 	public ValidationReport(String path, String name) throws IOException {
 		validationReportpath = path;
@@ -142,7 +146,7 @@ public class ValidationReport {
 
 		writer.append("===========================================");
 		writer.newLine();
-		
+
 		writeSummary2CSV(errorBank);
 
 	}
@@ -161,9 +165,9 @@ public class ValidationReport {
 			String err = iterator.next();
 			Integer counter = errorBank.get(err);
 
-			if(err.contains(","))
-				err=err.replace(",", "/");
-			
+			if (err.contains(","))
+				err = err.replace(",", "/");
+
 			csvWriter.append(err + "," + +counter);
 			csvWriter.newLine();
 		}
