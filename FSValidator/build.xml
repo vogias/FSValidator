@@ -61,7 +61,7 @@
 		<jar destfile="${dist.dir}/${appname}.jar" basedir="${build.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="grnet.validation.XMLValidation" />
-				<attribute name="Class-Path" value="./lib/commons-io-2.4.jar" />
+				<attribute name="Class-Path" value="./lib/commons-io-2.4.jar ./lib/logback-classic-1.0.13.jar ./lib/logback-core-1.0.13.jar ./lib/slf4j-api-1.7.5.jar" />
 			</manifest>
 		</jar>
 		<copy file="configure.properties" todir="${dist.dir}" />
