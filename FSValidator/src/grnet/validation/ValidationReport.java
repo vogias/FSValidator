@@ -31,7 +31,9 @@ public class ValidationReport {
 	BufferedWriter writer, csvWriter;
 	long start;
 	String name;
-	
+
+	private static final Logger slf4jLogger = LoggerFactory
+			.getLogger(ValidationReport.class);
 
 	public ValidationReport(String path, String name) throws IOException {
 		validationReportpath = path;
@@ -96,16 +98,20 @@ public class ValidationReport {
 		int total = getInvalidFilesNum() + getValidFilesNum();
 		writer.append("Total parsed files:" + total);
 		writer.newLine();
+
+		slf4jLogger.info("Total parsed files:" + total);
 	}
 
 	private void appendValidFilesNum() throws IOException {
 		writer.append("Number of valid records:" + getValidFilesNum());
 		writer.newLine();
+		slf4jLogger.info("Number of valid records:" + getValidFilesNum());
 	}
 
 	private void appendInValidFilesNum() throws IOException {
 		writer.append("Number of invalid records:" + getInvalidFilesNum());
 		writer.newLine();
+		slf4jLogger.info("Number of invalid records:" + getInvalidFilesNum());
 	}
 
 	private void appendDuration() throws IOException {
@@ -113,6 +119,8 @@ public class ValidationReport {
 		long diff = end - start;
 		writer.append("Total time (ms):" + diff);
 		writer.newLine();
+
+		slf4jLogger.info("Total time (ms):" + diff);
 	}
 
 	public void appendGeneralInfo() throws IOException {
