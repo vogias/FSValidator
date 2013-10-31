@@ -33,8 +33,6 @@ public class Core {
 	Boolean flag;
 	Validator validator;
 	HashMap<String, Integer> vErrors;
-	private static final Logger slf4jLogger = LoggerFactory
-			.getLogger(Core.class);
 
 	public Core(String xsdPath) {
 		reason = "";
@@ -56,14 +54,13 @@ public class Core {
 			// System.err.println("Please correct the input XSD URL");
 			// System.err.println("Exiting...");
 
-			slf4jLogger
-					.error("Malformed URL.Please correct the input XSD URL,exiting...");
+			e.printStackTrace();
 
 			System.exit(-1);
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
-			slf4jLogger.error(e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
@@ -111,15 +108,14 @@ public class Core {
 
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			slf4jLogger.error(e.getMessage());
+			// e.printStackTrace();
+			e.printStackTrace();
 		} catch (IOException e) {
-//			System.err.println("Source XML File not found ");
-//			System.err.println("Please correct the input XML Folder location.");
-//			System.err.println("Exiting...");
-			
-			slf4jLogger.error("Source XML File not found,Please correct the input XML Folder location.Exiting...");
-			
+			// System.err.println("Source XML File not found ");
+			// System.err.println("Please correct the input XML Folder location.");
+			// System.err.println("Exiting...");
+
+			e.printStackTrace();
 			System.exit(-1);
 		}
 

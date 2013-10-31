@@ -32,9 +32,6 @@ public class ValidationReport {
 	long start;
 	String name;
 
-	private static final Logger slf4jLogger = LoggerFactory
-			.getLogger(ValidationReport.class);
-
 	public ValidationReport(String path, String name) throws IOException {
 		validationReportpath = path;
 		this.name = name;
@@ -47,7 +44,6 @@ public class ValidationReport {
 		String date = new Date().toString();
 		writer.append("Report date:" + date);
 		writer.newLine();
-		slf4jLogger.info("Validation date:" + date);
 
 	}
 
@@ -96,45 +92,63 @@ public class ValidationReport {
 		this.validationReportpath = validationReportpath;
 	}
 
-	private void appendTotalParsedFiles() throws IOException {
+	private String appendTotalParsedFiles() throws IOException {
 		int total = getInvalidFilesNum() + getValidFilesNum();
 		writer.append("Total parsed files:" + total);
 		writer.newLine();
 
-		slf4jLogger.info("Total parsed files:" + total);
+		// slf4jLogger.info("Total parsed files:" + total);
+
+		return String.valueOf(total);
 	}
 
-	private void appendValidFilesNum() throws IOException {
-		writer.append("Number of valid records:" + getValidFilesNum());
+	private String appendValidFilesNum() throws IOException {
+		int validFilesNum = getValidFilesNum();
+		writer.append("Number of valid records:" + validFilesNum);
 		writer.newLine();
-		slf4jLogger.info("Number of valid records:" + getValidFilesNum());
+		// slf4jLogger.info("Number of valid records:" + getValidFilesNum());
+
+		return String.valueOf(validFilesNum);
+
 	}
 
-	private void appendInValidFilesNum() throws IOException {
-		writer.append("Number of invalid records:" + getInvalidFilesNum());
+	private String appendInValidFilesNum() throws IOException {
+		int invalidFilesNum = getInvalidFilesNum();
+		writer.append("Number of invalid records:" + invalidFilesNum);
 		writer.newLine();
-		slf4jLogger.info("Number of invalid records:" + getInvalidFilesNum());
+		// slf4jLogger.info("Number of invalid records:" +
+		// getInvalidFilesNum());
+
+		return String.valueOf(invalidFilesNum);
 	}
 
-	private void appendDuration() throws IOException {
+	private String appendDuration() throws IOException {
 		long end = System.currentTimeMillis();
 		long diff = end - start;
 		writer.append("Total time (ms):" + diff);
 		writer.newLine();
 
-		slf4jLogger.info("Total time (ms):" + diff);
+		// slf4jLogger.info("Total time (ms):" + diff);
+
+		return String.valueOf(diff);
 	}
 
-	public void appendGeneralInfo() throws IOException {
+	public StringBuffer appendGeneralInfo(StringBuffer input)
+			throws IOException {
 		writer.append("=========Validation general info===========");
 		writer.newLine();
-		appendTotalParsedFiles();
-		appendDuration();
-		appendValidFilesNum();
-		appendInValidFilesNum();
+		input.append(" " + appendTotalParsedFiles());
+		input.append(" " + appendDuration());
+
+		input.append(" " + appendValidFilesNum());
+
+		input.append(" " + appendInValidFilesNum());
+
 		writer.append("===========================================");
 		writer.newLine();
 		writer.close();
+
+		return input;
 
 	}
 

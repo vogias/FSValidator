@@ -20,8 +20,7 @@ public class Enviroment {
 	File validData, invalidData, dataProviderValid, dataProviderInValid;
 	Arguments arguments;
 
-	private static final Logger slf4jLogger = LoggerFactory
-			.getLogger(Enviroment.class);
+	
 
 	public Enviroment(String source) {
 		envCreation = createEnviroment(source);
@@ -132,11 +131,10 @@ public class Enviroment {
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 
-			slf4jLogger.error(e.getMessage());
 			return false;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			slf4jLogger.error(e.getMessage());
+			
 			return false;
 		}
 

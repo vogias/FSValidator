@@ -25,6 +25,7 @@ public class XMLValidation {
 		// TODO Auto-generated method ssstub
 
 		Enviroment enviroment = new Enviroment(args[0]);
+		StringBuffer logString = new StringBuffer();
 
 		if (enviroment.envCreation) {
 			String schemaUrl = enviroment.getArguments().getSchemaURL();
@@ -44,17 +45,20 @@ public class XMLValidation {
 				// System.out
 				// .println("Number of files to validate:" + xmls.size());
 
-				slf4jLogger.info("Validating repository:"
+				System.out.println("Validating repository:"
 						+ sourceFile.getName());
-				slf4jLogger.info("Number of files to validate:" + xmls.size());
 
+				logString.append(sourceFile.getName());
+				System.out
+						.println("Number of files to validate:" + xmls.size());
+
+				//logString.append(" "+xmls.size());
 				Iterator<File> iterator = xmls.iterator();
 
-				// System.out.println("Validating against schema:" + schemaUrl
-				// + "...");
-
-				slf4jLogger.info("Validating against schema:" + schemaUrl
+				System.out.println("Validating against schema:" + schemaUrl
 						+ "...");
+
+				logString.append(" "+schemaUrl);
 
 				ValidationReport report = null;
 				if (enviroment.getArguments().createReport()
@@ -111,10 +115,10 @@ public class XMLValidation {
 				}
 				if (report != null) {
 					report.writeErrorBank(core.getErrorBank());
-					report.appendGeneralInfo();
+					logString = report.appendGeneralInfo(logString);
 				}
 				// System.out.println("Validation is done.");
-				slf4jLogger.info("Validation is done");
+				slf4jLogger.info(logString.toString());
 			}
 
 		}
