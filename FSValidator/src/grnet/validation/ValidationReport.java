@@ -133,22 +133,19 @@ public class ValidationReport {
 		return String.valueOf(diff);
 	}
 
-	public StringBuffer appendGeneralInfo(StringBuffer input)
-			throws IOException {
+	public void appendGeneralInfo() throws IOException {
 		writer.append("=========Validation general info===========");
 		writer.newLine();
-		input.append(" " + appendTotalParsedFiles());
-		input.append(" " + appendDuration());
+		appendTotalParsedFiles();
+		appendDuration();
 
-		input.append(" " + appendValidFilesNum());
+		appendValidFilesNum();
 
-		input.append(" " + appendInValidFilesNum());
+		appendInValidFilesNum();
 
 		writer.append("===========================================");
 		writer.newLine();
 		writer.close();
-
-		return input;
 
 	}
 

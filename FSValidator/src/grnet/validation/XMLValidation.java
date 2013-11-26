@@ -25,7 +25,7 @@ public class XMLValidation {
 		// TODO Auto-generated method ssstub
 
 		Enviroment enviroment = new Enviroment(args[0]);
-		StringBuffer logString = new StringBuffer();
+		// StringBuffer logString = new StringBuffer();
 
 		if (enviroment.envCreation) {
 			String schemaUrl = enviroment.getArguments().getSchemaURL();
@@ -48,17 +48,17 @@ public class XMLValidation {
 				System.out.println("Validating repository:"
 						+ sourceFile.getName());
 
-				logString.append(sourceFile.getName());
+				// logString.append(sourceFile.getName());
 				System.out
 						.println("Number of files to validate:" + xmls.size());
 
-				//logString.append(" "+xmls.size());
+				// logString.append(" "+xmls.size());
 				Iterator<File> iterator = xmls.iterator();
 
 				System.out.println("Validating against schema:" + schemaUrl
 						+ "...");
 
-				logString.append(" "+schemaUrl);
+				// logString.append(" "+schemaUrl);
 
 				ValidationReport report = null;
 				if (enviroment.getArguments().createReport()
@@ -72,11 +72,21 @@ public class XMLValidation {
 
 				while (iterator.hasNext()) {
 
+					StringBuffer logString = new StringBuffer();
+					logString.append(sourceFile.getName());
+					logString.append(" " + schemaUrl);
+
 					File xmlFile = iterator.next();
+					String name = xmlFile.getName();
+					name = name.substring(0, name.indexOf(".xml"));
+
+					logString.append(" " + name);
 
 					boolean xmlIsValid = core.validateXMLSchema(xmlFile);
 
 					if (xmlIsValid) {
+						logString.append(" " + "Valid");
+						slf4jLogger.info(logString.toString());
 						try {
 							if (report != null) {
 								// report.appendXMLFileNameNStatus(
@@ -92,7 +102,8 @@ public class XMLValidation {
 							e.printStackTrace();
 						}
 					} else {
-
+						logString.append(" " + "Invalid");
+						slf4jLogger.info(logString.toString());
 						try {
 							if (report != null) {
 
@@ -115,10 +126,10 @@ public class XMLValidation {
 				}
 				if (report != null) {
 					report.writeErrorBank(core.getErrorBank());
-					logString = report.appendGeneralInfo(logString);
+				     report.appendGeneralInfo();
 				}
 				// System.out.println("Validation is done.");
-				slf4jLogger.info(logString.toString());
+				
 			}
 
 		}
