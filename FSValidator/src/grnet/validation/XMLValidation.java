@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -124,12 +126,13 @@ public class XMLValidation {
 						}
 					}
 				}
+
 				if (report != null) {
 					report.writeErrorBank(core.getErrorBank());
-				     report.appendGeneralInfo();
+					report.appendGeneralInfo();
 				}
-				// System.out.println("Validation is done.");
-				
+				System.out.println("Validation is done.");
+
 			}
 
 		}
