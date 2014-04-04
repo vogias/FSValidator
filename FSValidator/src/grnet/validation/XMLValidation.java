@@ -1,3 +1,13 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Kostas Vogias.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the GNU Public License v3.0
+ * which accompanies this distribution, and is available at
+ * http://www.gnu.org/licenses/gpl.html
+ * 
+ * Contributors:
+ *     Kostas Vogias - initial API and implementation
+ ******************************************************************************/
 /**
  * 
  */
@@ -7,8 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
@@ -22,9 +30,12 @@ public class XMLValidation {
 
 	private static final Logger slf4jLogger = LoggerFactory
 			.getLogger(XMLValidation.class);
+	
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method ssstub
+		
+		
 
 		Enviroment enviroment = new Enviroment(args[0]);
 		// StringBuffer logString = new StringBuffer();
