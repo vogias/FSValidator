@@ -22,6 +22,10 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
 /**
  * @author vogias
  * 
@@ -30,22 +34,16 @@ public class XMLValidation {
 
 	private static final Logger slf4jLogger = LoggerFactory
 			.getLogger(XMLValidation.class);
-	
+	private final static String QUEUE_NAME = "validation";
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method ssstub
-		
-		
 
 		Enviroment enviroment = new Enviroment(args[0]);
-		// StringBuffer logString = new StringBuffer();
 
 		if (enviroment.envCreation) {
 			String schemaUrl = enviroment.getArguments().getSchemaURL();
 			Core core = new Core(schemaUrl);
-
-			// XMLSource source = new XMLSource(enviroment.getArguments()
-			// .getSourceFolderLocation());
 
 			XMLSource source = new XMLSource(args[0]);
 
@@ -55,23 +53,16 @@ public class XMLValidation {
 
 				Collection<File> xmls = source.getXMLs();
 
-				// System.out
-				// .println("Number of files to validate:" + xmls.size());
-
 				System.out.println("Validating repository:"
 						+ sourceFile.getName());
 
-				// logString.append(sourceFile.getName());
 				System.out
 						.println("Number of files to validate:" + xmls.size());
 
-				// logString.append(" "+xmls.size());
 				Iterator<File> iterator = xmls.iterator();
 
 				System.out.println("Validating against schema:" + schemaUrl
 						+ "...");
-
-				// logString.append(" "+schemaUrl);
 
 				ValidationReport report = null;
 				if (enviroment.getArguments().createReport()
@@ -82,6 +73,13 @@ public class XMLValidation {
 							.getDataProviderValid().getName());
 
 				}
+
+				ConnectionFactory factory = new ConnectionFactory();
+				factory.setHost(enviroment.getArguments().getQueueHost());
+				factory.setUsername(enviroment.getArguments()
+						.getQueueUserName());
+				factory.setPassword(enviroment.getArguments()
+						.getQueuePassword());
 
 				while (iterator.hasNext()) {
 
@@ -100,11 +98,19 @@ public class XMLValidation {
 					if (xmlIsValid) {
 						logString.append(" " + "Valid");
 						slf4jLogger.info(logString.toString());
+						
+						Connection connection = factory.newConnection();
+						Channel channel = connection.createChannel();
+						channel.queueDeclare(QUEUE_NAME, false, false, false,
+								null);
+
+						channel.basicPublish("", QUEUE_NAME, null, logString
+								.toString().getBytes());
+						channel.close();
+						connection.close();
 						try {
 							if (report != null) {
-								// report.appendXMLFileNameNStatus(
-								// xmlFile.getPath(), Constants.validData,
-								// core.getReason());
+
 								report.raiseValidFilesNum();
 							}
 
@@ -117,6 +123,17 @@ public class XMLValidation {
 					} else {
 						logString.append(" " + "Invalid");
 						slf4jLogger.info(logString.toString());
+						
+						Connection connection = factory.newConnection();
+						Channel channel = connection.createChannel();
+						channel.queueDeclare(QUEUE_NAME, false, false, false,
+								null);
+
+						channel.basicPublish("", QUEUE_NAME, null, logString
+								.toString().getBytes());
+						channel.close();
+						connection.close();
+						
 						try {
 							if (report != null) {
 

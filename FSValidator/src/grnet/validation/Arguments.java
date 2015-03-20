@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 public class Arguments {
 
 	Properties props;
-	
 
 	public Arguments() throws FileNotFoundException, IOException {
 		props = new Properties();
@@ -55,9 +54,17 @@ public class Arguments {
 		return props.getProperty(Constants.xsd);
 	}
 
-	// public String getSourceFolderLocation() {
-	// return props.getProperty(Constants.sourceFolder);
-	// }
+	public String getQueueUserName() {
+		return props.getProperty(Constants.queueUser);
+	}
+
+	public String getQueuePassword() {
+		return props.getProperty(Constants.queuePass);
+	}
+
+	public String getQueueHost() {
+		return props.getProperty(Constants.queueHost);
+	}
 
 	public String getDestFolderLocation() {
 		return props.getProperty(Constants.destFolder);
