@@ -39,6 +39,7 @@ public class Arguments {
 	 * @return the props
 	 */
 	public Properties getProps() {
+		
 		return props;
 	}
 
