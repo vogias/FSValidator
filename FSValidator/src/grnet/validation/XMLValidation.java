@@ -15,6 +15,7 @@ package grnet.validation;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -32,8 +33,7 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class XMLValidation {
 
-	private static final Logger slf4jLogger = LoggerFactory
-			.getLogger(XMLValidation.class);
+	private static final Logger slf4jLogger = LoggerFactory.getLogger(XMLValidation.class);
 	private final static String QUEUE_NAME = "validation";
 
 	public static void main(String[] args) throws IOException {
@@ -53,33 +53,26 @@ public class XMLValidation {
 
 				Collection<File> xmls = source.getXMLs();
 
-				System.out.println("Validating repository:"
-						+ sourceFile.getName());
+				System.out.println("Validating repository:" + sourceFile.getName());
 
-				System.out
-						.println("Number of files to validate:" + xmls.size());
+				System.out.println("Number of files to validate:" + xmls.size());
 
 				Iterator<File> iterator = xmls.iterator();
 
-				System.out.println("Validating against schema:" + schemaUrl
-						+ "...");
+				System.out.println("Validating against schema:" + schemaUrl + "...");
 
 				ValidationReport report = null;
-				if (enviroment.getArguments().createReport()
-						.equalsIgnoreCase("true")) {
+				if (enviroment.getArguments().createReport().equalsIgnoreCase("true")) {
 
-					report = new ValidationReport(enviroment.getArguments()
-							.getDestFolderLocation(), enviroment
-							.getDataProviderValid().getName());
+					report = new ValidationReport(enviroment.getArguments().getDestFolderLocation(),
+							enviroment.getDataProviderValid().getName());
 
 				}
 
 				ConnectionFactory factory = new ConnectionFactory();
 				factory.setHost(enviroment.getArguments().getQueueHost());
-				factory.setUsername(enviroment.getArguments()
-						.getQueueUserName());
-				factory.setPassword(enviroment.getArguments()
-						.getQueuePassword());
+				factory.setUsername(enviroment.getArguments().getQueueUserName());
+				factory.setPassword(enviroment.getArguments().getQueuePassword());
 
 				while (iterator.hasNext()) {
 
@@ -98,14 +91,12 @@ public class XMLValidation {
 					if (xmlIsValid) {
 						logString.append(" " + "Valid");
 						slf4jLogger.info(logString.toString());
-						
+
 						Connection connection = factory.newConnection();
 						Channel channel = connection.createChannel();
-						channel.queueDeclare(QUEUE_NAME, false, false, false,
-								null);
+						channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 
-						channel.basicPublish("", QUEUE_NAME, null, logString
-								.toString().getBytes());
+						channel.basicPublish("", QUEUE_NAME, null, logString.toString().getBytes());
 						channel.close();
 						connection.close();
 						try {
@@ -114,8 +105,7 @@ public class XMLValidation {
 								report.raiseValidFilesNum();
 							}
 
-							FileUtils.copyFileToDirectory(xmlFile,
-									enviroment.getDataProviderValid());
+							FileUtils.copyFileToDirectory(xmlFile, enviroment.getDataProviderValid());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -123,31 +113,29 @@ public class XMLValidation {
 					} else {
 						logString.append(" " + "Invalid");
 						slf4jLogger.info(logString.toString());
-						
-						Connection connection = factory.newConnection();
-						Channel channel = connection.createChannel();
-						channel.queueDeclare(QUEUE_NAME, false, false, false,
-								null);
 
-						channel.basicPublish("", QUEUE_NAME, null, logString
-								.toString().getBytes());
-						channel.close();
-						connection.close();
-						
+						try {
+							Connection connection = factory.newConnection();
+							Channel channel = connection.createChannel();
+							channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+
+							channel.basicPublish("", QUEUE_NAME, null, logString.toString().getBytes());
+							channel.close();
+							connection.close();
+						} catch (ConnectException ex) {
+							ex.printStackTrace();
+						}
+
 						try {
 							if (report != null) {
 
-								if (enviroment.getArguments().extendedReport()
-										.equalsIgnoreCase("true"))
-									report.appendXMLFileNameNStatus(
-											xmlFile.getPath(),
-											Constants.invalidData,
+								if (enviroment.getArguments().extendedReport().equalsIgnoreCase("true"))
+									report.appendXMLFileNameNStatus(xmlFile.getPath(), Constants.invalidData,
 											core.getReason());
 
 								report.raiseInvalidFilesNum();
 							}
-							FileUtils.copyFileToDirectory(xmlFile,
-									enviroment.getDataProviderInValid());
+							FileUtils.copyFileToDirectory(xmlFile, enviroment.getDataProviderInValid());
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
