@@ -15,17 +15,12 @@ package grnet.validation;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 
 /**
  * @author vogias
@@ -69,11 +64,6 @@ public class XMLValidation {
 
 				}
 
-				ConnectionFactory factory = new ConnectionFactory();
-				factory.setHost(enviroment.getArguments().getQueueHost());
-				factory.setUsername(enviroment.getArguments().getQueueUserName());
-				factory.setPassword(enviroment.getArguments().getQueuePassword());
-
 				while (iterator.hasNext()) {
 
 					StringBuffer logString = new StringBuffer();
@@ -92,13 +82,6 @@ public class XMLValidation {
 						logString.append(" " + "Valid");
 						slf4jLogger.info(logString.toString());
 
-						Connection connection = factory.newConnection();
-						Channel channel = connection.createChannel();
-						channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-
-						channel.basicPublish("", QUEUE_NAME, null, logString.toString().getBytes());
-						channel.close();
-						connection.close();
 						try {
 							if (report != null) {
 
@@ -113,18 +96,6 @@ public class XMLValidation {
 					} else {
 						logString.append(" " + "Invalid");
 						slf4jLogger.info(logString.toString());
-
-						try {
-							Connection connection = factory.newConnection();
-							Channel channel = connection.createChannel();
-							channel.queueDeclare(QUEUE_NAME, false, false, false, null);
-
-							channel.basicPublish("", QUEUE_NAME, null, logString.toString().getBytes());
-							channel.close();
-							connection.close();
-						} catch (ConnectException ex) {
-							ex.printStackTrace();
-						}
 
 						try {
 							if (report != null) {
